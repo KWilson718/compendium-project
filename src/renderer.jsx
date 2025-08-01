@@ -39,6 +39,7 @@ import {
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
+import TestComp from './pages/TestComp.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -47,16 +48,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/" element={<App />}>
                     <Route index element={<Home />} />
                     <Route path="about" element={<About />} />
+                    <Route path="testcomp" element={<TestComp />} />
                 </Route>
             </Routes>
         </Router>
     </React.StrictMode>,
 );
-
-window.storeAPI.get('userPreferences').then((prefs) => {
-    console.log("Stored Preferences:", prefs);
-});
-
-window.storeAPI.set('userPreferences', { theme: 'dark', notifications: false });
-
-console.log('👋 This message is being logged by "renderer.js", included via Vite');

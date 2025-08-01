@@ -18,6 +18,7 @@ const createWindow = () => {
       contextIsolation: true,
       nodeIntegration: false,
     },
+    autoHideMenuBar: true,
   });
 
   // and load the index.html of the app.
