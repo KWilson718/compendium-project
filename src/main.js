@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
-import coreStore from './stores/electron-store';
+import coreStore from './stores/electron_store';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
