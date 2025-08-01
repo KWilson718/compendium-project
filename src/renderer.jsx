@@ -53,4 +53,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </React.StrictMode>,
 );
 
+window.storeAPI.get('userPreferences').then((prefs) => {
+    console.log("Stored Preferences:", prefs);
+});
+
+window.storeAPI.set('userPreferences', { theme: 'dark', notifications: false });
+
 console.log('👋 This message is being logged by "renderer.js", included via Vite');

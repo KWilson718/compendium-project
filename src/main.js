@@ -1,6 +1,7 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import coreStore from './stores/electron-store';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -14,6 +15,8 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
@@ -54,3 +57,17 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
+// Core Store Settings
+ipcMain.handle('electron-store-get', (event, key) => {
+  return coreStore.get(key);
+});
+
+ipcMain.handle('electron-store-set', (event, key, value) => {
+  coreStore.set(key, value);
+});
+
+ipcMain.handle('electron-store-delete', (event, key) => {
+  coreStore.delete(key);
+});

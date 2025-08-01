@@ -8,6 +8,7 @@ export default defineConfig({
     lib: {
       entry: 'src/preload.js',
       formats: ['cjs'],
+      fileName: () => 'preload.js',
     },
     rollupOptions: {
       external: ['electron'],
