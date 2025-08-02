@@ -64,6 +64,8 @@ export default function TestComp() {
                 <button type="submit">Create</button>
             </form>
 
+            <h2>Add New Chapter To Compendium Object</h2>
+
             <form onSubmit={handleChapterAdd}>
                 <label htmlFor='chapterName'>Add Chapter</label>
                 <input
@@ -74,6 +76,8 @@ export default function TestComp() {
                 />
                 <button type="submit" >Add</button>
             </form>
+
+            
 
             {compendiumObj && (
                 <div style={{ marginTop: '1rem' }}>
