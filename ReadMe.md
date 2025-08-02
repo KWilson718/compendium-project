@@ -1,12 +1,16 @@
-# Electron, React, React Router, Tailwind Boilerplate
+# Personal Note Compendium Creation Tool
 
-This project simply is a boilerplate with attempts to create a valid environment to build desktop applications. 
+## Purpose
 
-It uses the following Technologies
+After gathering notes in multitudes of formats throughout years of academic studies, I have realized that there is great value to a condensed collection of all key data learned throughout said experience. Despite being decent at the note taking itself, I can greatly benefit from creating a compendium of information so that all critical information is in one standardized location. 
+
+Looking for projects to continue learning about data flow, the concept of creating a service to create and organize this idea proved to be of interest. This project should allow for one to compile various notes together & format everything together. 
+
+## Technologies Used
 
 - Electron Forge (Vite Template)
+- Electron Store (Core Process State Store)
 - React
 - React Router
+- Zustand (Front End State Store)
 - TailwindCSS
-
-Hopefully, this repo brings an extremely barebones structure for a working boilerplate to hit the ground running nearly instantly.
