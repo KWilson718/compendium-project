@@ -6,11 +6,11 @@ export const frontStore = create((set) => ({
   setCompendium: (neo) => {
     set({ currentCompendium: neo });
 
-    window.electronStore?.set('currentCompendium', neo);
+    window.storeAPI?.set('currentCompendium', neo);
   },
 
   loadCompendium: async () => {
-    const stored = await window.electronStore?.get('currentCompendium');
+    const stored = await window.storeAPI?.get('currentCompendium');
     if (stored) {
       set({ currentCompendium: stored });
     }

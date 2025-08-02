@@ -41,15 +41,18 @@ import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import TestComp from './pages/TestComp.jsx';
 
+import LandingPage from './pages/LandingPage.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <Router>
-            <Routes>
-                <Route path="/" element={<App />}>
+            <Routes> 
+                {/* <Route path="/" element={<App />}>
                     <Route index element={<Home />} />
                     <Route path="about" element={<About />} />
                     <Route path="testcomp" element={<TestComp />} />
-                </Route>
+                </Route> */}
+                <Route path="/" element={<LandingPage />} />
             </Routes>
         </Router>
     </React.StrictMode>,

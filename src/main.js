@@ -1,5 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
+import fs from 'node:fs';
 import started from 'electron-squirrel-startup';
 import coreStore from './stores/electron_store';
 
@@ -71,4 +72,49 @@ ipcMain.handle('electron-store-set', (event, key, value) => {
 
 ipcMain.handle('electron-store-delete', (event, key) => {
   coreStore.delete(key);
+});
+
+// Elecron API Settings
+ipcMain.handle('electron-file-save', async () => {
+  const win = BrowserWindow.getFocusedWindow();
+  const { filePath } = await dialog.showSaveDialog(win, {
+    filters: [{ name: 'JSON', extensions: ['json'] }]
+  });
+
+  if (filePath) {
+    const currentCompendium = coreStore.get('currentCompendium') || {};
+    fs.writeFileSync(filePath, JSON.stringify(currentCompendium, null, 2), 'utf-8');
+    // Optionally store the last used file path
+    coreStore.set('currentCompendiumFilePath', filePath);
+    return { success: true, path: filePath };
+  }
+
+  return { success: false };
+});
+
+ipcMain.handle('electron-file-save-last', async () => {
+  const filePath = coreStore.get('currentCompendiumFilePath');
+  const currentCompendium = coreStore.get('currentCompendium') || {};
+
+  if (filePath) {
+    fs.writeFileSync(filePath, JSON.stringify(currentCompendium, null, 2), 'utf-8');
+    return { success: true, path: filePath };
+  }
+
+  return { success: false, error: 'No file path set' };
+});
+
+ipcMain.handle('electron-file-read', async () => {
+  const win = BrowserWindow.getFocusedWindow();
+  const { filePaths } = await dialog.showOpenDialog(win, {
+    filters: [{ name: 'JSON', extensions: ['json'] }],
+    properties: ['openFile']
+  });
+
+  if (filePaths && filePaths[0]) {
+    const raw = fs.readFileSync(filePaths[0], 'utf-8');
+    return JSON.parse(raw);
+  }
+
+  return null;
 });
