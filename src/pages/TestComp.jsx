@@ -7,6 +7,9 @@ import { generateID } from '../utils/utility_functions';
 
 export default function TestComp() {
     const [compendiumName, setCompendiumName] = useState('');
+    const [chapterName, setChapterName] = useState('');
+    // const [sectionName, setSectionName] = useState('');
+    // const [subSectionName, setSubSectionName] = useState('');
 
     const compendiumObj = frontStore((state) => state.currentCompendium);
     const setCompendium = frontStore((state) => state.setCompendium);
@@ -20,13 +23,28 @@ export default function TestComp() {
         e.preventDefault();
 
         const newCompendium = {
-        id: generateID(),
-        name: compendiumName,
+            id: generateID(),
+            name: compendiumName,
+            body: [],
         };
 
         setCompendium(newCompendium);
         setCompendiumName('');
     };
+
+    const handleChapterAdd = (e) => {
+        e.preventDefault();
+
+        const newChapter = {
+            id: generateID(),
+            name: chapterName,
+        };
+
+        compendiumObj.body.push(newChapter);
+
+        setCompendium(compendiumObj)
+        setChapterName('');
+    }
 
     return (
         <div>
@@ -44,6 +62,17 @@ export default function TestComp() {
                     required
                 />
                 <button type="submit">Create</button>
+            </form>
+
+            <form onSubmit={handleChapterAdd}>
+                <label htmlFor='chapterName'>Add Chapter</label>
+                <input
+                    type="text"
+                    id="chapterName"
+                    value={chapterName}
+                    onChange={(e) => setChapterName(e.target.value)}
+                />
+                <button type="submit" >Add</button>
             </form>
 
             {compendiumObj && (
