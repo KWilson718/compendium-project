@@ -9,9 +9,10 @@ export default function TestComp() {
     const [compendiumName, setCompendiumName] = useState('');
     const [chapterName, setChapterName] = useState('');
     const [sectionName, setSectionName] = useState('');
-    // const [subSectionName, setSubSectionName] = useState('');
+    const [subSectionName, setSubSectionName] = useState('');
 
     const [selectedChapterID, setSelectedChapterID] = useState('');
+    const [selectedSectionID, setSelectedSectionID] = useState('');
 
     const compendiumObj = frontStore((state) => state.currentCompendium);
     const setCompendium = frontStore((state) => state.setCompendium);
@@ -74,10 +75,34 @@ export default function TestComp() {
         setSectionName('');
     };
 
+    const handleSubsectionAdd = (e) => {
+        e.preventDefault();
+        if (!selectedSectionID) return;
+
+        const newSubsection = {
+        id: generateID(),
+        name: subSectionName,
+        body: [],
+        };
+
+        compendiumObj.sections[selectedSectionID].body.push(newSubsection.id);
+        compendiumObj.subsections[newSubsection.id] = newSubsection;
+
+        setCompendium({ ...compendiumObj });
+        setSubSectionName('');
+    };
+
     const chapterOptions = compendiumObj?.chapters
         ? Object.entries(compendiumObj.chapters).map(([id, chapter]) => ({
             id,
             name: chapter.name,
+        }))
+        : [];
+
+    const sectionOptions = selectedChapterID && compendiumObj?.chapters?.[selectedChapterID]
+        ? compendiumObj.chapters[selectedChapterID].body.map((sectionId) => ({
+            id: sectionId,
+            name: compendiumObj.sections[sectionId]?.name || '(Unnamed)',
         }))
         : [];
 
@@ -137,6 +162,34 @@ export default function TestComp() {
                     onChange={(e) => setSectionName(e.target.value)}
                 />
                 <button type="submit">Add Section</button>
+            </form>
+
+            <h2>Add New Subsection to Section</h2>
+            <form onSubmit={handleSubsectionAdd}>
+                <label htmlFor="sectionSelect">Choose Section:</label>
+                <select
+                    id="sectionSelect"
+                    value={selectedSectionID}
+                    onChange={(e) => setSelectedSectionID(e.target.value)}
+                    required
+                    disabled={!selectedChapterID}
+                >
+                    <option value="">-- Select a Section --</option>
+                    {sectionOptions.map((section) => (
+                        <option key={section.id} value={section.id}>
+                        {section.name}
+                        </option>
+                    ))}
+                </select>
+
+                <label htmlFor="subSectionName">Subsection Name:</label>
+                <input
+                    type="text"
+                    id="subSectionName"
+                    value={subSectionName}
+                    onChange={(e) => setSubSectionName(e.target.value)}
+                />
+                <button type="submit">Add Subsection</button>
             </form>
 
             {compendiumObj && (
