@@ -1,23 +1,32 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { frontStore } from '../stores/react_store';
 
 import { generateID } from '../utils/utility_functions';
 
 export default function TestComp() {
     const [compendiumName, setCompendiumName] = useState('');
-    const [compendiumObj, setCompendiumObj] = useState({});
 
+    const compendiumObj = frontStore((state) => state.currentCompendium);
+    const setCompendium = frontStore((state) => state.setCompendium);
+    const loadCompendium = frontStore((state) => state.loadCompendium);
+
+    useEffect(() => {
+        loadCompendium();
+    }, [loadCompendium]);
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newCompendium = {
-            id: generateID(),
-            name: compendiumName,
-        }
+        id: generateID(),
+        name: compendiumName,
+        };
 
-        setCompendiumObj(newCompendium);
+        setCompendium(newCompendium);
         setCompendiumName('');
-    }
+    };
 
     return (
         <div>
