@@ -42,6 +42,7 @@ import About from './pages/About.jsx';
 import TestComp from './pages/TestComp.jsx';
 
 import LandingPage from './pages/LandingPage.jsx';
+import DoesNotExist from './pages/PageNotFound.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -53,6 +54,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="testcomp" element={<TestComp />} />
                 </Route> */}
                 <Route path="/" element={<LandingPage />} />
+                <Route path="*" element={<DoesNotExist />} />
             </Routes>
         </Router>
     </React.StrictMode>,
