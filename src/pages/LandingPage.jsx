@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { frontStore } from '../stores/react_store';
 import { generateID } from '../utils/utility_functions';
 
+import StandardButton1 from '../components/stdButon1';
+
 export default function LandingPage() {
 
     const [showModal, setShowModal] = useState(false);
@@ -36,8 +38,8 @@ export default function LandingPage() {
         <div className="flex flex-col items-center justify-center min-h-screen max-h-100 bg-gray-900 text-white" >
             <h1 className="text-3xl" >Welcome To The Compendium Creation Assistant</h1>
             <div className="flex flex-row m-4" >
-                <button className="m-2 p-2 bg-gray-700 rounded hover:bg-gray-500 transition-colors duration-200" onClick={() => setShowModal(true)} >Create New Compendium</button>
-                <button className="m-2 p-2 bg-gray-700 rounded hover:bg-gray-500 transition-colors duration-200" onClick={handleLoad} >Load Existing Compendium</button>
+                <StandardButton1 onClick={() => setShowModal(true)} >Create New Compendium</StandardButton1>
+                <StandardButton1 onClick={handleLoad} >Create New Compendium</StandardButton1>
             </div>
 
             {showModal && (
@@ -52,19 +54,17 @@ export default function LandingPage() {
                             placeholder="Enter Name..."
                         />
                         <div className="flex justify-end gap-2">
-                            <button
+                            <StandardButton1
                                 onClick={() => setShowModal(false)}
-                                className="px-4 py-2 bg-gray-300 rounded"
                             >
                                 Cancel
-                            </button>
-                            <button
+                            </StandardButton1>
+                            <StandardButton1
                                 onClick={handleCreate}
-                                className="px-4 py-2 bg-green-500 text-white rounded"
                                 disabled={!compendiumName.trim()}
                             >
                                 Save
-                            </button>
+                            </StandardButton1>
                         </div>
                     </div>
                 </div>
