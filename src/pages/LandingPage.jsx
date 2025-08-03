@@ -39,12 +39,12 @@ export default function LandingPage() {
             <h1 className="text-3xl" >Welcome To The Compendium Creation Assistant</h1>
             <div className="flex flex-row m-4" >
                 <StandardButton1 onClick={() => setShowModal(true)} >Create New Compendium</StandardButton1>
-                <StandardButton1 onClick={handleLoad} >Create New Compendium</StandardButton1>
+                <StandardButton1 onClick={handleLoad} >Load Compendium</StandardButton1>
             </div>
 
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-gray-700 p-6 rounded-xl w-96">
+                    <div className="bg-gray-900 p-6 rounded-xl w-96">
                         <h2 className="text-lg font-bold mb-4" >New Compendium</h2>
                         <input 
                             type="text"
