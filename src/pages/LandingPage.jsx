@@ -27,7 +27,7 @@ export default function LandingPage() {
         setCompendium(newCompendium);
 
         setShowModal(false);
-        navigate("/page_not_built_yet");
+        navigate("/comp-view");
     }
 
     const handleLoad = async () => {

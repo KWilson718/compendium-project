@@ -37,12 +37,11 @@ import {
 } from 'react-router-dom';
 
 import App from './App.jsx';
-import Home from './pages/Home.jsx';
-import About from './pages/About.jsx';
 import TestComp from './pages/TestComp.jsx';
 
 import LandingPage from './pages/LandingPage.jsx';
 import DoesNotExist from './pages/PageNotFound.jsx';
+import CompendiumView from './pages/CompendiumView.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -54,6 +53,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="testcomp" element={<TestComp />} />
                 </Route> */}
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/comp-view" element={<CompendiumView />} />
                 <Route path="*" element={<DoesNotExist />} />
             </Routes>
         </Router>
