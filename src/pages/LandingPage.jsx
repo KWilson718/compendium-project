@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { frontStore } from '../stores/react_store';
 import { generateID } from '../utils/utility_functions';
 
-import StandardButton1 from '../components/stdButon1';
+import StandardButton1 from '../components/StdButon1';
 
 export default function LandingPage() {
 
@@ -26,7 +26,7 @@ export default function LandingPage() {
         
         setCompendium(newCompendium);
 
-        setShowModal(false);
+        // setShowModal(false);
         navigate("/comp-view");
     }
 

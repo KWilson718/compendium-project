@@ -3,7 +3,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx,html}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        'screen-dynamic': '100dvh'
+      }
+    },
   },
   plugins: [],
 }
