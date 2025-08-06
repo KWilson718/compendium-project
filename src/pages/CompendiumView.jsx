@@ -20,11 +20,18 @@ export default function CompendiumView () {
     }, [loadCompendium, dataLoaded]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white m-0 p-0 border border-red-500">
-            <div className="flex flex-row items-center justify-evenly h-1/10 w-screen" >
-                <StandardButton1 onClick={() => navigate("/")} >Back</StandardButton1>
-                <StandardButton1 disabled={!dataLoaded} >Add Content</StandardButton1>
-                <StandardButton1 disabled={!dataLoaded} >Edit Content</StandardButton1>
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white m-0 p-0">
+            <div className="flex flex-row items-center justify-between h-1/10 w-screen bg-gray-700" >
+                <div className="h-full">
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
+                </div>
+                <div className="h-full">
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1>
+                </div>
+                <div className="h-full">
+                    <StandardButton1 onClick={() => navigate("/")} className="h-auto" >Back</StandardButton1>
+                </div>
             </div>
 
             {/* Used to output a message if there's a loading error */}
