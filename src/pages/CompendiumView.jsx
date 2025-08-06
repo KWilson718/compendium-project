@@ -20,17 +20,17 @@ export default function CompendiumView () {
     }, [loadCompendium, dataLoaded]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white m-0 p-0">
-            <div className="flex flex-row items-center justify-between h-1/10 w-screen bg-gray-700" >
-                <div className="h-full">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
+        <div className="flex flex-col h-screen bg-gray-900 text-white m-0 p-0">
+            <div className="w-full bg-gray-800 text-white px-4 py-2 shadow-md flex items-center justify-between" >
+                <div className="">
+                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Save</StandardButton1>
                 </div>
-                <div className="h-full">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1>
+                <div className="">
+                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Add Content</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Edit Content</StandardButton1>
                 </div>
-                <div className="h-full">
-                    <StandardButton1 onClick={() => navigate("/")} className="h-auto" >Back</StandardButton1>
+                <div className="">
+                    <StandardButton1 onClick={() => navigate("/")} className="h-full shadow-md" >Back</StandardButton1>
                 </div>
             </div>
 
@@ -42,7 +42,7 @@ export default function CompendiumView () {
             </div>}
             
             {/* The Core Layout of the Page's Data, requiring the model to be loaded for it to appear */}
-            {(compendiumObj != {}) && <div className="flex flex-col items-center justify-center h-9/10"> 
+            {(compendiumObj != {}) && <div className="flex flex-col items-center justify-center mt-5"> 
                 <h1>{compendiumObj?.name}</h1>
             </div>}
 
