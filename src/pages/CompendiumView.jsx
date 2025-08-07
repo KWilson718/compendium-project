@@ -7,6 +7,7 @@ import StandardButton1 from '../components/StdButon1';
 
 export default function CompendiumView () {
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const compendiumObj = frontStore((state) => state.currentCompendium);
     const setCompendium = frontStore((state) => state.setCompendium);
@@ -46,7 +47,13 @@ export default function CompendiumView () {
                 <h1>{compendiumObj?.name}</h1>
             </div>}
 
-            
+            {(showModal) && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" >
+                    <div className="bg-gray-900 p-6 rounded-xl w-96" >
+                        <h1>Add Chapter</h1>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
