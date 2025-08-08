@@ -24,14 +24,14 @@ export default function CompendiumView () {
         <div className="flex flex-col h-screen bg-gray-900 text-white m-0 p-0">
             <div className="w-full bg-gray-800 text-white px-4 py-2 shadow-md flex items-center justify-between" >
                 <div className="">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Save</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
                 </div>
                 <div className="">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Add Content</StandardButton1>
-                    <StandardButton1 disabled={!dataLoaded} className="h-full shadow-md" >Edit Content</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1>
                 </div>
                 <div className="">
-                    <StandardButton1 onClick={() => navigate("/")} className="h-full shadow-md" >Back</StandardButton1>
+                    <StandardButton1 onClick={() => navigate("/")} className="h-full" >Back</StandardButton1>
                 </div>
             </div>
 
