@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { frontStore } from "../stores/react_store";
 
 import StandardButton1 from '../components/StdButon1';
+import TitleLabel from "../components/TitleLabel";
 
 export default function CompendiumView () {
     const [dataLoaded, setDataLoaded] = useState(false);
@@ -27,8 +28,9 @@ export default function CompendiumView () {
                     <StandardButton1 disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
                 </div>
                 <div className="">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1>
+                    {/* <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
+                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1> */}
+                    <StandardButton1 onClick={navigate('/comp-view')}><TitleLabel name={compendiumObj?.name}/></StandardButton1>
                 </div>
                 <div className="">
                     <StandardButton1 onClick={() => navigate("/")} className="h-full" >Back</StandardButton1>
