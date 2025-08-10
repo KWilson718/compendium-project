@@ -75,51 +75,6 @@ ipcMain.handle('electron-store-delete', (event, key) => {
   coreStore.delete(key);
 });
 
-// Elecron API Settings
-ipcMain.handle('electron-file-save', async () => {
-  const win = BrowserWindow.getFocusedWindow();
-  const { filePath } = await dialog.showSaveDialog(win, {
-    filters: [{ name: 'JSON', extensions: ['json'] }]
-  });
-
-  if (filePath) {
-    const currentCompendium = coreStore.get('currentCompendium') || {};
-    fs.writeFileSync(filePath, JSON.stringify(currentCompendium, null, 2), 'utf-8');
-    // Optionally store the last used file path
-    coreStore.set('currentCompendiumFilePath', filePath);
-    return { success: true, path: filePath };
-  }
-
-  return { success: false };
-});
-
-ipcMain.handle('electron-file-save-last', async () => {
-  const filePath = coreStore.get('currentCompendiumFilePath');
-  const currentCompendium = coreStore.get('currentCompendium') || {};
-
-  if (filePath) {
-    fs.writeFileSync(filePath, JSON.stringify(currentCompendium, null, 2), 'utf-8');
-    return { success: true, path: filePath };
-  }
-
-  return { success: false, error: 'No file path set' };
-});
-
-ipcMain.handle('electron-file-read', async () => {
-  const win = BrowserWindow.getFocusedWindow();
-  const { filePaths } = await dialog.showOpenDialog(win, {
-    filters: [{ name: 'JSON', extensions: ['json'] }],
-    properties: ['openFile']
-  });
-
-  if (filePaths && filePaths[0]) {
-    const raw = fs.readFileSync(filePaths[0], 'utf-8');
-    return JSON.parse(raw);
-  }
-
-  return null;
-});
-
 ipcMain.handle('electron-file-create', async (event, projectName) =>{
   const win = BrowserWindow.getFocusedWindow();
   const baseFolder = await promptForBaseFolder(win);

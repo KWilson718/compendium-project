@@ -10,9 +10,6 @@ contextBridge.exposeInMainWorld('storeAPI', {
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  saveFile: () => ipcRenderer.invoke('electron-file-save'),
-  saveToLastFile: () => ipcRenderer.invoke('electron-file-save-last'),
-  readFile: () => ipcRenderer.invoke('electron-file-read'),
   createProject: (projectName) => ipcRenderer.invoke('electron-file-create', projectName),
   loadProject: (projectPath) => ipcRenderer.invoke('electron-file-load', projectPath,),
   loadProjectSection: (projectPath, sectionId) => ipcRenderer.invoke('electron-file-load', projectPath, sectionId),
