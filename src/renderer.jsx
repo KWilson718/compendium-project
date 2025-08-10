@@ -8,9 +8,6 @@ import {
     Route,
 } from 'react-router-dom';
 
-import App from './App.jsx';
-import TestComp from './pages/TestComp.jsx';
-
 import LandingPage from './pages/LandingPage.jsx';
 import DoesNotExist from './pages/PageNotFound.jsx';
 import CompendiumView from './pages/CompendiumView.jsx';
