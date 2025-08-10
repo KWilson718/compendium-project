@@ -10,7 +10,7 @@ import StandardButton1 from '../components/StdButon1';
 
 export default function LandingPage() {
 
-    const [showModal, setShowModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [compendiumName, setCompendiumName] = useState('');
     const navigate = useNavigate();
     const setCompendium = frontStore((state) => state.setCompendium);
@@ -22,7 +22,7 @@ export default function LandingPage() {
 
         if (!result) {
             alert('Project Creation Canceled');
-            setShowModal(false);
+            setShowCreateModal(false);
             return;
         }
 
@@ -39,25 +39,40 @@ export default function LandingPage() {
                 alert(`Error loading project:\n${loadResult.error}`);
             }
         } else {
-            setShowModal(false);
+            setShowCreateModal(false);
             alert(`Failed to create project:\n${result.error}`);
         }
     };
 
 
     const handleLoad = async () => {
-        console.log("Placeholder for Load Compendium");
+        const location = await window.electronAPI.findProject();
+        if (location.success){
+            const loadResult = await window.electronAPI.loadProject(location.folder);
+
+            if(loadResult.success) {
+                setCompendium(loadResult.compendium);
+                setCompendiumPath(location.folder);
+
+                navigate("/comp-view");
+            }
+            else{
+                alert(`Error loading project:\n${loadResult.error}`);
+            }
+        } else {
+            alert(`Failed to find project location: \n${location.error}`);
+        }
     }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen max-h-100 bg-gray-900 text-white" >
             <h1 className="text-3xl" >Welcome To The Compendium Creation Assistant</h1>
             <div className="flex flex-row m-4" >
-                <StandardButton1 onClick={() => setShowModal(true)} >Create New Compendium</StandardButton1>
+                <StandardButton1 onClick={() => setShowCreateModal(true)} >Create New Compendium</StandardButton1>
                 <StandardButton1 onClick={handleLoad} >Load Compendium</StandardButton1>
             </div>
 
-            {showModal && (
+            {showCreateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-gray-900 p-6 rounded-xl w-96">
                         <h2 className="text-lg font-bold mb-4" >New Compendium</h2>
@@ -70,7 +85,7 @@ export default function LandingPage() {
                         />
                         <div className="flex justify-end gap-2">
                             <StandardButton1
-                                onClick={() => setShowModal(false)}
+                                onClick={() => setShowCreateModal(false)}
                             >
                                 Cancel
                             </StandardButton1>

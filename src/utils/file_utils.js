@@ -4,7 +4,7 @@ import path from 'node:path';
 
 export async function promptForBaseFolder(mainWindow) {
     const result = await dialog.showOpenDialog(mainWindow, {
-        title: "Choose where to save your new compendium",
+        title: "Choose Where To Save Your New Compendium",
         buttonLabel: "Select Folder",
         properties: ['openDirectory', 'createDirectory'],
     });

@@ -90,6 +90,24 @@ ipcMain.handle('electron-file-create', async (event, projectName) =>{
   }
 });
 
+ipcMain.handle('electron-file-locate', async () => {
+  try {
+    const win = BrowserWindow.getFocusedWindow();
+    const folder = await promptForBaseFolder(win)
+
+    console.log("The Folder Found Was:", folder);
+
+    if (!folder) {
+      return {success: false, error: "Failed To Locate Folder"};
+    }
+
+    return {success: true, folder: folder};
+  }
+  catch(err) {
+    return {success: false, error: err.message};
+  }
+});
+
 ipcMain.handle('electron-file-load', async (event, projectPath, sectionId) => {
   try {
     const compendiumPath = path.join(projectPath, 'compendium.json');

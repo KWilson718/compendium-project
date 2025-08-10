@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('storeAPI', {
 
 contextBridge.exposeInMainWorld('electronAPI', {
   createProject: (projectName) => ipcRenderer.invoke('electron-file-create', projectName),
+  findProject: () => ipcRenderer.invoke('electron-file-locate'),
   loadProject: (projectPath) => ipcRenderer.invoke('electron-file-load', projectPath,),
   loadProjectSection: (projectPath, sectionId) => ipcRenderer.invoke('electron-file-load', projectPath, sectionId),
 })
