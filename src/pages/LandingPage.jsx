@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { frontStore } from '../stores/react_store';
 import { generateID } from '../utils/utility_functions';
 
+import path from 'path-browserify';
+
+
 import StandardButton1 from '../components/StdButon1';
 
 export default function LandingPage() {
@@ -11,24 +14,36 @@ export default function LandingPage() {
     const [compendiumName, setCompendiumName] = useState('');
     const navigate = useNavigate();
     const setCompendium = frontStore((state) => state.setCompendium);
+    const setCompendiumPath = frontStore((state) => state.setCompendiumPath);
 
+    
     const handleCreate = async () => {
-        const newCompendium = {
-            id: generateID(),
-            name: compendiumName,
-            body: [],
-            chapters: {},
-            sections: {},
-            subsections: {},
-            entries: {},
-            figures: {},
-        };
-        
-        setCompendium(newCompendium);
+        const result = await window.electronAPI.createProject(compendiumName);
 
-        // setShowModal(false);
-        navigate("/comp-view");
-    }
+        if (!result) {
+            alert('Project Creation Canceled');
+            setShowModal(false);
+            return;
+        }
+
+        if (result.success) {
+            const loadResult = await window.electronAPI.loadProject(result.path);
+
+            if (loadResult.success) {
+                // store plain serializable data
+                setCompendium(loadResult.compendium);
+                setCompendiumPath(result.path);
+
+                navigate("/comp-view"); // only navigate after success
+            } else {
+                alert(`Error loading project:\n${loadResult.error}`);
+            }
+        } else {
+            setShowModal(false);
+            alert(`Failed to create project:\n${result.error}`);
+        }
+    };
+
 
     const handleLoad = async () => {
         console.log("Placeholder for Load Compendium");

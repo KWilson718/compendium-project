@@ -19,7 +19,14 @@ export default function CompendiumView () {
     useEffect(() => {
         loadCompendium();
         setDataLoaded(true);
-    }, [loadCompendium, dataLoaded]);
+    }, [loadCompendium]);
+
+    useEffect(() => {
+        if (dataLoaded && (!compendiumObj || Object.keys(compendiumObj).length === 0)) {
+            navigate("/");
+        }
+    }, [dataLoaded, compendiumObj, navigate]);
+
 
     return (
         <div className="flex flex-col h-screen bg-gray-900 text-white m-0 p-0">
@@ -30,7 +37,7 @@ export default function CompendiumView () {
                 <div className="">
                     {/* <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
                     <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1> */}
-                    <StandardButton1 onClick={navigate('/comp-view')}><TitleLabel name={compendiumObj?.name}/></StandardButton1>
+                    <StandardButton1 onClick={() => navigate('/comp-view')}><TitleLabel name={compendiumObj?.projectMeta?.title}/></StandardButton1>
                 </div>
                 <div className="">
                     <StandardButton1 onClick={() => navigate("/")} className="h-full" >Back</StandardButton1>
@@ -38,15 +45,17 @@ export default function CompendiumView () {
             </div>
 
             {/* Used to output a message if there's a loading error */}
-            {(compendiumObj == {}) && <div>
+            {(Object.keys(compendiumObj).length === 0) && <div>
                 <h1>Error: No Compendium Loaded</h1>
                 <p>Current Data Object Below:</p>
                 <pre>{JSON.stringify(compendiumObj, null, 2)}</pre>
             </div>}
             
             {/* The Core Layout of the Page's Data, requiring the model to be loaded for it to appear */}
-            {(compendiumObj != {}) && <div className="flex flex-col items-center justify-center mt-5"> 
-                <h1>{compendiumObj?.name}</h1>
+            {(Object.keys(compendiumObj).length > 0 ) && <div className="flex flex-col items-center justify-center mt-5"> 
+                <h1>{compendiumObj?.projectMeta?.title}</h1>
+
+                <pre>{JSON.stringify(compendiumObj, null, 2)}</pre>
             </div>}
 
             {(showModal) && (

@@ -3,6 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import started from 'electron-squirrel-startup';
 import coreStore from './stores/electron_store';
+import { promptForBaseFolder, createNewProject } from './utils/file_utils.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -117,4 +118,38 @@ ipcMain.handle('electron-file-read', async () => {
   }
 
   return null;
+});
+
+ipcMain.handle('electron-file-create', async (event, projectName) =>{
+  const win = BrowserWindow.getFocusedWindow();
+  const baseFolder = await promptForBaseFolder(win);
+
+  if (!baseFolder) return null;
+
+  try {
+    const projectPath = createNewProject(baseFolder, projectName);
+    return {success: true, path: projectPath};
+  }
+  catch(err) {
+    return {success: false, error: err.message};
+  }
+});
+
+ipcMain.handle('electron-file-load', async (event, projectPath, sectionId) => {
+  try {
+    const compendiumPath = path.join(projectPath, 'compendium.json');
+    const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
+
+    if (!sectionId){
+      return { success: true, compendium };
+    }
+
+    const sectionPath = path.join(projectPath, 'content', `${sectionId}.html`);
+    const sectionContent = fs.readFileSync(sectionPath, 'utf-8');
+
+    return { success: true, compendium, sectionContent };
+  }
+  catch (err) {
+    return { success: false, error: err.message };
+  }
 });
