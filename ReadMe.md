@@ -14,3 +14,10 @@ Looking for projects to continue learning about data flow, the concept of creati
 - React Router
 - Zustand (Front End State Store)
 - TailwindCSS
+
+## To Run
+
+- clone the repo
+- open the folder in a terminal
+- run ```npm install``` to install packages
+- run ```npm run start``` to open
