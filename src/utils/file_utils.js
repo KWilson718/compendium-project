@@ -1,6 +1,7 @@
 import { dialog } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
+import coreStore from '../stores/electron_store';
 
 export async function promptForBaseFolder(mainWindow) {
     const result = await dialog.showOpenDialog(mainWindow, {
@@ -44,3 +45,14 @@ export function createNewProject(baseFolder, projectName) {
 
     return projectFolder;
 }
+
+// export function saveProject(projectFolder) {
+//     const compendium = coreStore.currentCompendium;
+
+//     const jsonFile = {
+//         projectMeta: compendium.projectMeta,
+//         chapters: [],
+//     }
+
+    
+// }

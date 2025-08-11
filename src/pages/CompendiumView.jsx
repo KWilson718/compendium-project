@@ -37,7 +37,7 @@ export default function CompendiumView () {
                 <div className="">
                     {/* <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
                     <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1> */}
-                    <StandardButton1 onClick={() => navigate('/comp-view')}><TitleLabel name={compendiumObj?.projectMeta?.title}/></StandardButton1>
+                    <TitleLabel name={compendiumObj?.projectMeta?.title} onClick={() => navigate("/comp-view")} />
                 </div>
                 <div className="">
                     <StandardButton1 onClick={() => navigate("/")} className="h-full" >Back</StandardButton1>
