@@ -1,19 +1,33 @@
 import { create } from 'zustand';
 
 export const frontStore = create((set) => ({
-  currentCompendium: {},
+  currentCompendiumIndex: {},
   currentCompendiumPath: '',
+  currentCompendiumChapters: [],
   
-  setCompendium: (neo) => {
-    set({ currentCompendium: neo });
+  setCompendiumIndex: (neo) => {
+    set({ currentCompendiumIndex: neo });
 
-    window.storeAPI?.set('currentCompendium', neo); 
+    window.storeAPI?.set('currentCompendiumIndex', neo); 
   },
 
-  loadCompendium: async () => {
-    const stored = await window.storeAPI?.get('currentCompendium');
+  loadCompendiumIndex: async () => {
+    const stored = await window.storeAPI?.get('currentCompendiumIndex');
     if (stored) {
-      set({ currentCompendium: stored });
+      set({ currentCompendiumIndex: stored });
+    }
+  },
+
+  setCompendiumChapters: (neo) => {
+    set({ currentCompendiumChapters: neo });
+
+    window.storeAPI?.set('currentCompendiumChapters', neo);
+  },
+
+  loadCompendiumChapters: async (neo) => {
+    const stored = await window.storeAPI?.get('currentCompendiumChapters');
+    if (stored) {
+      set({ currentCompendiumChapters: stored });
     }
   },
 

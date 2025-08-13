@@ -10,16 +10,16 @@ export default function CompendiumView () {
     const [dataLoaded, setDataLoaded] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    const compendiumObj = frontStore((state) => state.currentCompendium);
-    const setCompendium = frontStore((state) => state.setCompendium);
-    const loadCompendium = frontStore((state) => state.loadCompendium);
+    const compendiumObj = frontStore((state) => state.currentCompendiumIndex);
+    const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
+    const loadCompendiumIndex = frontStore((state) => state.loadCompendiumIndex);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        loadCompendium();
+        loadCompendiumIndex();
         setDataLoaded(true);
-    }, [loadCompendium]);
+    }, [loadCompendiumIndex]);
 
     useEffect(() => {
         if (dataLoaded && (!compendiumObj || Object.keys(compendiumObj).length === 0)) {

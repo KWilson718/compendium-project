@@ -49,13 +49,11 @@ export function createNewProject(baseFolder, projectName) {
     return projectFolder;
 }
 
-// export function saveProject(projectFolder) {
-//     const compendium = coreStore.currentCompendium;
+export function saveProject(projectFolder) {
+    const compendium = coreStore.currentCompendium;
 
-//     const jsonFile = {
-//         projectMeta: compendium.projectMeta,
-//         chapters: [],
-//     }
-
-    
-// }
+    const jsonFile = {
+        projectMeta: compendium.projectMeta,
+        chapters: [],
+    }
+}
