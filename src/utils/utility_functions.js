@@ -4,3 +4,7 @@ export function generateID() {
 
     return timestamp + randomNumber;
 }
+
+export function scrubSpaces(string){
+    return string.replaceAll(' ', '_');
+}
