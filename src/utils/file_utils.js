@@ -2,6 +2,7 @@ import { dialog } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import coreStore from '../stores/electron_store';
+import { scrubSpaces } from './utility_functions';
 
 export async function promptForBaseFolder(mainWindow) {
     const result = await dialog.showOpenDialog(mainWindow, {
@@ -18,7 +19,9 @@ export async function promptForBaseFolder(mainWindow) {
 }
 
 export function createNewProject(baseFolder, projectName) {
-    const projectFolder = path.join(baseFolder, projectName);
+    const projectFolderName = scrubSpaces(projectName);
+
+    const projectFolder = path.join(baseFolder, projectFolderName);
 
     if (!fs.existsSync(projectFolder)) {
         fs.mkdirSync(projectFolder, {recursive: true});
