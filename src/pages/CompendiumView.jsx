@@ -5,6 +5,7 @@ import { frontStore } from "../stores/react_store";
 
 import StandardButton1 from '../components/StdButon1';
 import TitleLabel from "../components/TitleLabel";
+import DataElementCard from "../components/DataElementCard";
 
 // Compendium Creation Page function used to display the top level structure of the compendium object with key functionality served to the user
 export default function CompendiumView () {
@@ -62,7 +63,7 @@ export default function CompendiumView () {
             
             {/* The Core Layout of the Page's Data, requiring the model to be loaded for it to appear */}
             {(Object.keys(compendiumObj).length > 0 ) && <div className="flex flex-col items-center justify-center mt-5"> 
-                <h1>{compendiumObj?.projectMeta?.title}</h1>
+                <DataElementCard>{compendiumObj?.projectMeta?.title}</DataElementCard>
 
                 <pre>{JSON.stringify(compendiumObj, null, 2)}</pre>
             </div>}
