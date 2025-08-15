@@ -4,7 +4,9 @@ import path from 'node:path';
 import coreStore from '../stores/electron_store';
 import { scrubSpaces } from './utility_functions';
 
+// Calls to search for a folder location on one's file system
 export async function promptForBaseFolder(mainWindow) {
+    // Used to fetch the folder location
     const result = await dialog.showOpenDialog(mainWindow, {
         title: "Choose Where To Save Your New Compendium",
         buttonLabel: "Select Folder",
@@ -18,11 +20,14 @@ export async function promptForBaseFolder(mainWindow) {
     return result.filePaths[0];
 }
 
+// Used to create a new project structure in the filesystem
 export function createNewProject(baseFolder, projectName) {
+    // Reworks the project name to be more filesystem friendly
     const projectFolderName = scrubSpaces(projectName);
 
     const projectFolder = path.join(baseFolder, projectFolderName);
 
+    // Creates new folder for project to lie in
     if (!fs.existsSync(projectFolder)) {
         fs.mkdirSync(projectFolder, {recursive: true});
     } else {
@@ -41,6 +46,7 @@ export function createNewProject(baseFolder, projectName) {
         chapters: [],
     }
 
+    // Creates the core file index in a json file
     fs.writeFileSync(
         path.join(projectFolder, 'compendium.json'),
         JSON.stringify(compendiumJSON, null, 2)
@@ -49,9 +55,13 @@ export function createNewProject(baseFolder, projectName) {
     return projectFolder;
 }
 
+// Used to save a project to an existing location in the filesystem
 export function saveProject() {
+    // Pulls in data from the data store
     const compendiumJSON = coreStore.currentCompendiumIndex;
     const projectFolder = coreStore.currentCompendiumFilePath;
+    
+    // Writes the updated data to the file system, returning success or failure
     try {
         if (fs.existsSync(projectFolder)){
             fs.writeFileSync(
