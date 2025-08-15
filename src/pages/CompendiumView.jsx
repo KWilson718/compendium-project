@@ -27,12 +27,19 @@ export default function CompendiumView () {
         }
     }, [dataLoaded, compendiumObj, navigate]);
 
+    const handleSave = async () => {
+        const saved = await window.electronAPI.saveProject();
+        if (saved.success){
+            console.log("Successfully Saved Compendium");
+        }
+    }
+
 
     return (
         <div className="flex flex-col h-screen bg-gray-900 text-white m-0 p-0">
             <div className="w-full bg-gray-800 text-white px-4 py-2 shadow-md flex items-center justify-between" >
                 <div className="">
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
+                    <StandardButton1 onClick={handleSave} disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
                 </div>
                 <div className="">
                     {/* <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>

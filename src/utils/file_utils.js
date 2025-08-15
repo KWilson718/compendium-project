@@ -49,11 +49,23 @@ export function createNewProject(baseFolder, projectName) {
     return projectFolder;
 }
 
-export function saveProject(projectFolder) {
-    const compendium = coreStore.currentCompendium;
+export function saveProject() {
+    const compendiumJSON = coreStore.currentCompendiumIndex;
+    const projectFolder = coreStore.currentCompendiumFilePath;
+    try {
+        if (fs.existsSync(projectFolder)){
+            fs.writeFileSync(
+                path.join(projectFolder, 'compendium.json'),
+                JSON.stringify(compendiumJSON, null, 2)
+            );
 
-    const jsonFile = {
-        projectMeta: compendium.projectMeta,
-        chapters: [],
+            return true;
+        }
+        else {
+            throw new Error(`Folder '${projectFolder}' was unable to be located`);
+        }
+    }
+    catch (err) {
+        return { success: false, error: err }
     }
 }

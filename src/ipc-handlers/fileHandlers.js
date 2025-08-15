@@ -1,7 +1,8 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { promptForBaseFolder, createNewProject } from '../utils/file_utils.js';
+import { promptForBaseFolder, createNewProject, saveProject } from '../utils/file_utils.js';
+import coreStore from '../stores/electron_store.js';
 
 export default function registerFileHandlers() {
     ipcMain.handle('electron-file-create', async (event, projectName) =>{
@@ -55,5 +56,21 @@ export default function registerFileHandlers() {
         return { success: false, error: err.message };
     }
     });
+
+    ipcMain.handle('electron-file-save', async (event) => {
+        try {
+            const result = await saveProject();
+
+            if (result) {
+                return { success: true }
+            }
+            else {
+                throw new Error(`Save Failed, ${result}`);
+            }
+        }
+        catch(err) {
+            return { success: false, error: err };
+        }
+    })
 }
 
