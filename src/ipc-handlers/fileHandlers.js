@@ -4,59 +4,70 @@ import fs from 'node:fs';
 import { promptForBaseFolder, createNewProject, saveProject } from '../utils/file_utils.js';
 import coreStore from '../stores/electron_store.js';
 
+// Creates the logic to handle file interaction based ipc calls
 export default function registerFileHandlers() {
+    // File create call
     ipcMain.handle('electron-file-create', async (event, projectName) =>{
-    const win = BrowserWindow.getFocusedWindow();
-    const baseFolder = await promptForBaseFolder(win);
-
-    if (!baseFolder) return null;
-
-    try {
-        const projectPath = createNewProject(baseFolder, projectName);
-        return {success: true, path: projectPath};
-    }
-    catch(err) {
-        return {success: false, error: err.message};
-    }
-    });
-
-    ipcMain.handle('electron-file-locate', async () => {
-    try {
+        // Localized variables
         const win = BrowserWindow.getFocusedWindow();
-        const folder = await promptForBaseFolder(win)
+        const baseFolder = await promptForBaseFolder(win);
 
-        console.log("The Folder Found Was:", folder);
+        if (!baseFolder) return null;
 
-        if (!folder) {
-        return {success: false, error: "Failed To Locate Folder"};
+        // Calls create new project surrounded with correct variables & error handling
+        try {
+            const projectPath = createNewProject(baseFolder, projectName);
+            return {success: true, path: projectPath};
         }
-
-        return {success: true, folder: folder};
-    }
-    catch(err) {
-        return {success: false, error: err.message};
-    }
+        catch(err) {
+            return {success: false, error: err.message};
+        }
     });
 
+    // Used to locate an existing project in the file system
+    ipcMain.handle('electron-file-locate', async () => {
+        try {
+            // Localized Variables
+            const win = BrowserWindow.getFocusedWindow();
+            // Calls to find folder
+            const folder = await promptForBaseFolder(win)
+
+            console.log("The Folder Found Was:", folder);
+
+            if (!folder) {
+                // Returns successful data load
+                return {success: false, error: "Failed To Locate Folder"};
+            }
+
+            return {success: true, folder: folder};
+        }
+        catch(err) {
+            return {success: false, error: err.message};
+        }
+    });
+
+    // Loads data from folder in file system
     ipcMain.handle('electron-file-load', async (event, projectPath, sectionId) => {
-    try {
-        const compendiumPath = path.join(projectPath, 'compendium.json');
-        const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
+        try {
+            const compendiumPath = path.join(projectPath, 'compendium.json');
+            const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
 
-        if (!sectionId){
-        return { success: true, compendium };
+            if (!sectionId){
+                return { success: true, compendium };
+            }
+
+            // Starting logic to load in specific project section if one is present
+            const sectionPath = path.join(projectPath, 'content', `${sectionId}.html`);
+            const sectionContent = fs.readFileSync(sectionPath, 'utf-8');
+
+            return { success: true, compendium, sectionContent };
         }
-
-        const sectionPath = path.join(projectPath, 'content', `${sectionId}.html`);
-        const sectionContent = fs.readFileSync(sectionPath, 'utf-8');
-
-        return { success: true, compendium, sectionContent };
-    }
-    catch (err) {
-        return { success: false, error: err.message };
-    }
+        catch (err) {
+            return { success: false, error: err.message };
+        }
     });
 
+    // Handles call to save project, returning result based on boolean success
     ipcMain.handle('electron-file-save', async (event) => {
         try {
             const result = await saveProject();
