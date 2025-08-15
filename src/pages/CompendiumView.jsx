@@ -65,7 +65,7 @@ export default function CompendiumView () {
             {(Object.keys(compendiumObj).length > 0 ) && <div className="flex flex-col items-center justify-center mt-5"> 
                 <DataElementCard>{compendiumObj?.projectMeta?.title}</DataElementCard>
 
-                <pre>{JSON.stringify(compendiumObj, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(compendiumObj, null, 2)}</pre> */}
             </div>}
 
             {(showModal) && (
