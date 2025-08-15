@@ -1,3 +1,6 @@
+// :::::::::: Vite Default Config ::::::::::
+// Provides a default config for vite in general, specifying the build directory, root, and plugins
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
