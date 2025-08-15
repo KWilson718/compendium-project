@@ -1,3 +1,4 @@
+// Reusable Button Component providing styling, clicking feature, and allowing for further styling
 export default function StandardButton1 ({onClick, className='', children, disabled=false}) {
     return (
         <button 

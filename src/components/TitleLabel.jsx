@@ -1,3 +1,4 @@
+// Title Label Component containing text for Compendium name, blown up in size, and surrounded by an invisible button
 export default function TitleLabel({name, onClick, className='', disabled=false}){
     return (
         <button
