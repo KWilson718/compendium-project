@@ -13,7 +13,7 @@ export default function LandingPage() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [compendiumName, setCompendiumName] = useState('');
     const navigate = useNavigate();
-    const setCompendium = frontStore((state) => state.setCompendium);
+    const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
     const setCompendiumPath = frontStore((state) => state.setCompendiumPath);
 
     
@@ -31,7 +31,7 @@ export default function LandingPage() {
 
             if (loadResult.success) {
                 // store plain serializable data
-                setCompendium(loadResult.compendium);
+                setCompendiumIndex(loadResult.compendium);
                 setCompendiumPath(result.path);
 
                 navigate("/comp-view"); // only navigate after success
@@ -51,7 +51,7 @@ export default function LandingPage() {
             const loadResult = await window.electronAPI.loadProject(location.folder);
 
             if(loadResult.success) {
-                setCompendium(loadResult.compendium);
+                setCompendiumIndex(loadResult.compendium);
                 setCompendiumPath(location.folder);
 
                 navigate("/comp-view");
@@ -85,7 +85,7 @@ export default function LandingPage() {
                         />
                         <div className="flex justify-end gap-2">
                             <StandardButton1
-                                onClick={() => setShowCreateModal(false)}
+                                onClick={() => {setShowCreateModal(false); setCompendiumName('');}}
                             >
                                 Cancel
                             </StandardButton1>
