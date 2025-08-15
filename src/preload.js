@@ -1,14 +1,16 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+// :::::::::: Preload Calls ::::::::::
+// Lists out Preload Functions for Main to expose to the Renderer and beyond
 
 const { contextBridge, ipcRenderer } = require('electron');
 
+// Creates functions for interacting with the backend based electron-store
 contextBridge.exposeInMainWorld('storeAPI', {
   get: (key) => ipcRenderer.invoke('electron-store-get', key),
   set: (key, value) => ipcRenderer.invoke('electron-store-set', key, value),
   delete: (key) => ipcRenderer.invoke('electron-store-delete', key),
 });
 
+// Creates functions for interacting with backend file systems and the likes
 contextBridge.exposeInMainWorld('electronAPI', {
   createProject: (projectName) => ipcRenderer.invoke('electron-file-create', projectName),
   findProject: () => ipcRenderer.invoke('electron-file-locate'),

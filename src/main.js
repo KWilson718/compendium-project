@@ -1,3 +1,6 @@
+// :::::::::: Main Electron Handler ::::::::::
+// Used as the key provider and handler for serving various Electron Windows to the user & passing data inbetween
+
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
@@ -9,6 +12,7 @@ if (started) {
   app.quit();
 }
 
+// Function used to create the main browser window & passes in key parameters to define sizing and core functionality
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -22,14 +26,14 @@ const createWindow = () => {
     autoHideMenuBar: true,
   });
 
-  // and load the index.html of the app.
+  // Loads the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  // Open the DevTools.
+  // Uncomment to Open the DevTools.
   // mainWindow.webContents.openDevTools(); // Uncomment to enable DevTools
 };
 
@@ -39,6 +43,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
+  // Imports the IPC Handlers, which handle calls made by the preload script
   registerIPCHandlers();
 
   // On OS X it's common to re-create a window in the app when the
@@ -58,6 +63,3 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
