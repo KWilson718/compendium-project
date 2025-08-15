@@ -6,6 +6,13 @@ After gathering notes in multitudes of formats throughout years of academic stud
 
 Looking for projects to continue learning about data flow, the concept of creating a service to create and organize this idea proved to be of interest. This project should allow for one to compile various notes together & format everything together. 
 
+## To Run Project
+
+- clone the repo
+- open the folder in a terminal
+- ```npm install``` to install packages
+- ```npm run start``` to open
+
 ## Technologies Used
 
 - Electron Forge (Vite Template)
@@ -15,9 +22,6 @@ Looking for projects to continue learning about data flow, the concept of creati
 - Zustand (Front End State Store)
 - TailwindCSS
 
-## To Run
+## Current Work
 
-- clone the repo
-- open the folder in a terminal
-- run ```npm install``` to install packages
-- run ```npm run start``` to open
+Currently, the basic file structure is being worked on, with direct focus being on the overarching data schema. Most of the major concepts have been ironed out, with implementation coming in the near future.
