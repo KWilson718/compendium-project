@@ -8,6 +8,7 @@ import path from 'path-browserify';
 
 import StandardButton1 from '../components/StdButon1';
 
+// First and key page served to user containing options to create or load a compendium
 export default function LandingPage() {
 
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -17,7 +18,9 @@ export default function LandingPage() {
     const setCompendiumPath = frontStore((state) => state.setCompendiumPath);
 
     
+    // Handles calling the API to create a folder, an index.json file, and then navigate to the core view
     const handleCreate = async () => {
+        // Call to create a project
         const result = await window.electronAPI.createProject(compendiumName);
 
         if (!result) {
@@ -30,11 +33,12 @@ export default function LandingPage() {
             const loadResult = await window.electronAPI.loadProject(result.path);
 
             if (loadResult.success) {
-                // store plain serializable data
+                // store data in local data stores
                 setCompendiumIndex(loadResult.compendium);
                 setCompendiumPath(result.path);
 
-                navigate("/comp-view"); // only navigate after success
+                // navigates to compendium view only after successful creation and loading of data
+                navigate("/comp-view");
             } else {
                 alert(`Error loading project:\n${loadResult.error}`);
             }
@@ -44,16 +48,20 @@ export default function LandingPage() {
         }
     };
 
-
+    // Handles calling the API to load a folder & therefore compendium from the file system
     const handleLoad = async () => {
+        // Fetches folder location
         const location = await window.electronAPI.findProject();
         if (location.success){
+            // Loads project from folder
             const loadResult = await window.electronAPI.loadProject(location.folder);
 
             if(loadResult.success) {
+                // Syncs up across data stores
                 setCompendiumIndex(loadResult.compendium);
                 setCompendiumPath(location.folder);
 
+                // Only navigates upon successful load
                 navigate("/comp-view");
             }
             else{
@@ -72,6 +80,7 @@ export default function LandingPage() {
                 <StandardButton1 onClick={handleLoad} >Load Compendium</StandardButton1>
             </div>
 
+            {/* Creation Modal to hold space to provide the compendium name and confirm creation */}
             {showCreateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-gray-900 p-6 rounded-xl w-96">
