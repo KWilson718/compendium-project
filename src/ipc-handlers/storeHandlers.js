@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import coreStore from '../stores/electron_store';
 
+// Set of functions establishing conections between ipc calls & electron store functions
 export default function registerStoreHandlers() {
     // Core Store Settings
     ipcMain.handle('electron-store-get', (event, key) => {

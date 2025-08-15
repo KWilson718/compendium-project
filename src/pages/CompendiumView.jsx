@@ -6,6 +6,7 @@ import { frontStore } from "../stores/react_store";
 import StandardButton1 from '../components/StdButon1';
 import TitleLabel from "../components/TitleLabel";
 
+// Compendium Creation Page function used to display the top level structure of the compendium object with key functionality served to the user
 export default function CompendiumView () {
     const [dataLoaded, setDataLoaded] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -16,17 +17,20 @@ export default function CompendiumView () {
 
     const navigate = useNavigate();
 
+    // Loads compendium upon component rendering
     useEffect(() => {
         loadCompendiumIndex();
         setDataLoaded(true);
     }, [loadCompendiumIndex]);
 
+    // Runs back to the front page if something loads wrong
     useEffect(() => {
         if (dataLoaded && (!compendiumObj || Object.keys(compendiumObj).length === 0)) {
             navigate("/");
         }
     }, [dataLoaded, compendiumObj, navigate]);
 
+    // Function used to call saving functionality
     const handleSave = async () => {
         const saved = await window.electronAPI.saveProject();
         if (saved.success){
@@ -42,8 +46,6 @@ export default function CompendiumView () {
                     <StandardButton1 onClick={handleSave} disabled={!dataLoaded} className="h-full" >Save</StandardButton1>
                 </div>
                 <div className="">
-                    {/* <StandardButton1 disabled={!dataLoaded} className="h-full" >Add Content</StandardButton1>
-                    <StandardButton1 disabled={!dataLoaded} className="h-full" >Edit Content</StandardButton1> */}
                     <TitleLabel name={compendiumObj?.projectMeta?.title} onClick={() => navigate("/comp-view")} />
                 </div>
                 <div className="">
