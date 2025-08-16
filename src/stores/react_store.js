@@ -6,7 +6,7 @@ import { create } from 'zustand';
 export const frontStore = create((set) => ({
   currentCompendiumIndex: {},
   currentCompendiumPath: '',
-  currentCompendiumChapters: [],
+  currentCompendiumChapters: {},
   
   // Sets the main index of the store
   setCompendiumIndex: (neo) => {

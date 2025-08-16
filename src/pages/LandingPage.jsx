@@ -16,6 +16,7 @@ export default function LandingPage() {
     const navigate = useNavigate();
     const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
     const setCompendiumPath = frontStore((state) => state.setCompendiumPath);
+    const setCompendiumChapters = frontStore((state) => state.setCompendiumChapters);
 
     
     // Handles calling the API to create a folder, an index.json file, and then navigate to the core view
@@ -60,6 +61,7 @@ export default function LandingPage() {
                 // Syncs up across data stores
                 setCompendiumIndex(loadResult.compendium);
                 setCompendiumPath(location.folder);
+                setCompendiumChapters(loadResult.chapters);
 
                 // Only navigates upon successful load
                 navigate("/comp-view");

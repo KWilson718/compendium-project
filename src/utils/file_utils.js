@@ -2,7 +2,7 @@ import { dialog } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import coreStore from '../stores/electron_store';
-import { scrubSpaces } from './utility_functions';
+import { generateID, scrubSpaces } from './utility_functions';
 
 // Calls to search for a folder location on one's file system
 export async function promptForBaseFolder(mainWindow) {
@@ -79,3 +79,45 @@ export function saveProject() {
         return { success: false, error: err }
     }
 }
+
+// export function createChapter(chapterName) {
+//     try {
+//         const compendiumJSON = coreStore.currentCompendiumIndex;
+//         const projectFolder = coreStore.currentCompendiumFilePath;
+//         const contentFolder = path.join(projectFolder, 'content');
+//         const scrubbedTitle = scrubSpaces(chapterName);
+//         const id = generateID();
+
+//         const fileName = `${id}.html`;
+
+//         const dateNow = new Date().toISOString();
+
+//         // const htmlTemplate = `
+//         //     <!-- \n{\n  \"id\": \"${id}\",\n  \"title\": \"${chapterName}\",\n  \"created\": \"${now}\",\n  \"modified\": \"${now}\",\n  \"fileName\": \"${fileName}\"\n}\n-->
+//         //     <!DOCTYPE html>
+//         //     <html>
+//         //         <head>
+//         //             <title>${chapterName}</title>
+//         //         </head>
+//         //         <body>
+//         //             <h1>${chapterName}</h1>
+//         //             <p>New chapter starts here...</p>
+//         //         </body>
+//         //     </html>
+//         // `;
+
+//         // const chapterFile = {
+//         //     chapterMeta: {
+//         //         title: chapterName,
+//         //         scrubbedTitle: scrubbedTitle,
+//         //         created: new Date().toISOString(),
+//         //         lastModified: new Date().toISOString(),
+//         //         pageCount: 0,
+//         //     },
+//         //     content: {},
+//         // }
+//     }
+//     catch (err) {
+//         return { success: false, error: err };
+//     }
+// }

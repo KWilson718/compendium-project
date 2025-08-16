@@ -3,6 +3,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { promptForBaseFolder, createNewProject, saveProject } from '../utils/file_utils.js';
 import coreStore from '../stores/electron_store.js';
+import { generateID } from '../utils/utility_functions.js';
 
 // Creates the logic to handle file interaction based ipc calls
 export default function registerFileHandlers() {
@@ -53,7 +54,7 @@ export default function registerFileHandlers() {
             const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
 
             if (!sectionId){
-                return { success: true, compendium };
+                return { success: true, compendium, chapters: {contents: 0} };
             }
 
             // Starting logic to load in specific project section if one is present
@@ -82,6 +83,49 @@ export default function registerFileHandlers() {
         catch(err) {
             return { success: false, error: err };
         }
-    })
-}
+    });
 
+    // Handles creation of a chapter object & addition to the current compendium
+    ipcMain.handle('electron-chapter-create', async (event, chapterName) => {
+        try {
+            // Generates Local Params
+            const id = generateID();
+            const now = new Date().toISOString();
+
+            const currentIndex = coreStore.get('currentCompendiumIndex') || {};
+            const currentChapters = coreStore.get('currentCompendiumChapters') || {};
+
+            // Starting Chapter File
+            const startingHTML=`
+                <!--\n{\n  \"id\": \"${id}\",\n  \"title\": \"${chapterName}\",\n  \"created\": \"${now}\",\n  \"modified\": \"${now}\"\n}\n-->
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${chapterName}</title>
+                </head>
+                <body>
+                    <h1>${chapterName}</h1>
+                    <p>New chapter starts here...</p>
+                </body>
+                </html>
+            `;
+
+            // Takes the Core Store's currentCompendiumChapters object, and assigns 'id: startingHTML' to it
+            currentChapters[id] = startingHTML;
+            coreStore.set('currentCompendiumChapters', currentChapters);
+            console.log("Current Chapters set to: ", currentChapters);
+
+            // Takes the Core Store's currentCompendiumIndex and pushes the id into the chapters: [] array
+            if (!currentIndex.chapters) currentIndex.chapters = [];
+            currentIndex.chapters.push(id);
+            currentIndex.projectMeta.lastModified = now;
+            coreStore.set('currentCompendiumIndex', currentIndex);
+            console.log("Current Compendium Index set to: ", currentIndex);
+
+            return { success: true, id: id, title: chapterName };
+        }
+        catch (err) {
+            return { success: false, error: err};
+        }
+    });
+}

@@ -14,8 +14,10 @@ export default function CompendiumView () {
     const [chapterName, setChapterName] = useState('');
 
     const compendiumObj = frontStore((state) => state.currentCompendiumIndex);
+    const compendiumChapters = frontStore((state) => state.currentCompendiumChapters);
     const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
     const loadCompendiumIndex = frontStore((state) => state.loadCompendiumIndex);
+    const loadCompendiumChapters = frontStore((state) => state.loadCompendiumChapters);
 
     const navigate = useNavigate();
 
@@ -32,6 +34,12 @@ export default function CompendiumView () {
         }
     }, [dataLoaded, compendiumObj, navigate]);
 
+
+    // USED FOR DEBUGGING THE CHAPTER COMPONENT
+    useEffect(() => {
+        console.log("React compendiumChapters changed -->", compendiumChapters);
+    }, [compendiumChapters]);
+
     // Function used to call saving functionality
     const handleSave = async () => {
         const saved = await window.electronAPI.saveProject();
@@ -43,9 +51,16 @@ export default function CompendiumView () {
     const handleChapterCreate = async () => {
         console.log("Creating Chapter with name: ", chapterName);
 
-        const result = window.electronAPI.createChapter(chapterName);
+        const result = await window.electronAPI.createChapter(chapterName);
 
-        console.log(resut);
+        console.log(result);
+
+        if (result.success) {
+            loadCompendiumIndex();
+            loadCompendiumChapters();
+
+            console.log("Current Compendium Chapters: ", compendiumChapters);
+        }
         
         setShowModal(false);
         setChapterName('');
@@ -79,7 +94,8 @@ export default function CompendiumView () {
 
                 <StandardButton1 onClick={() => setShowModal(true)} >Add Chapter</StandardButton1>
 
-                {/* <pre>{JSON.stringify(compendiumObj, null, 2)}</pre> */}
+                <pre>{JSON.stringify(compendiumObj, null, 2)}</pre>
+                <h1>{JSON.stringify(compendiumChapters)}</h1>
             </div>}
 
             {(showModal) && (

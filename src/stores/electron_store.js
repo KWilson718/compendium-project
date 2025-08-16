@@ -7,7 +7,9 @@ const coreStore = new Store({
     defaults: {
         currentCompendiumIndex: {},
         currentCompendiumFilePath: '',
-        currentCompendiumChapters: [],
+        currentCompendiumChapters: {
+            contents: null,
+        },
     }
 });
 
