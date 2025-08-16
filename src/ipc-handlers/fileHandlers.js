@@ -54,7 +54,7 @@ export default function registerFileHandlers() {
             const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
 
             if (!sectionId){
-                return { success: true, compendium, chapters: {contents: 0} };
+                return { success: true, compendium, chapters: {} };
             }
 
             // Starting logic to load in specific project section if one is present
