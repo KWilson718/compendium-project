@@ -11,6 +11,7 @@ import DataElementCard from "../components/DataElementCard";
 export default function CompendiumView () {
     const [dataLoaded, setDataLoaded] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [chapterName, setChapterName] = useState('');
 
     const compendiumObj = frontStore((state) => state.currentCompendiumIndex);
     const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
@@ -39,6 +40,17 @@ export default function CompendiumView () {
         }
     }
 
+    const handleChapterCreate = async () => {
+        console.log("Creating Chapter with name: ", chapterName);
+
+        const result = window.electronAPI.createChapter(chapterName);
+
+        console.log(resut);
+        
+        setShowModal(false);
+        setChapterName('');
+    }
+
 
     return (
         <div className="flex flex-col h-screen bg-gray-900 text-white m-0 p-0">
@@ -65,6 +77,8 @@ export default function CompendiumView () {
             {(Object.keys(compendiumObj).length > 0 ) && <div className="flex flex-col items-center justify-center mt-5"> 
                 <DataElementCard>{compendiumObj?.projectMeta?.title}</DataElementCard>
 
+                <StandardButton1 onClick={() => setShowModal(true)} >Add Chapter</StandardButton1>
+
                 {/* <pre>{JSON.stringify(compendiumObj, null, 2)}</pre> */}
             </div>}
 
@@ -72,6 +86,26 @@ export default function CompendiumView () {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" >
                     <div className="bg-gray-900 p-6 rounded-xl w-96" >
                         <h1>Add Chapter</h1>
+                        <input 
+                            type="text"
+                            value={chapterName}
+                            onChange={(e) => setChapterName(e.target.value)}
+                            className="w-full border px-2 py-1 mb-4"
+                            placeholder="Enter Chapter Name..."
+                        />
+                        <div className="flex justify-end gap-2">
+                            <StandardButton1
+                                onClick={() => {setShowModal(false); setChapterName('');}}
+                            >
+                                Cancel
+                            </StandardButton1>
+                            <StandardButton1
+                                onClick={handleChapterCreate}
+                                disabled={!chapterName.trim()}
+                            >
+                                Save
+                            </StandardButton1>
+                        </div>
                     </div>
                 </div>
             )}
