@@ -2,7 +2,7 @@ import { dialog } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import coreStore from '../stores/electron_store';
-import { scrubSpaces } from './utility_functions';
+import { generateID, scrubSpaces } from './utility_functions';
 
 // Calls to search for a folder location on one's file system
 export async function promptForBaseFolder(mainWindow) {
@@ -57,13 +57,35 @@ export function createNewProject(baseFolder, projectName) {
 
 // Used to save a project to an existing location in the filesystem
 export function saveProject() {
+    console.log("Save Project Function Reached - FileUtils");
+
     // Pulls in data from the data store
-    const compendiumJSON = coreStore.currentCompendiumIndex;
-    const projectFolder = coreStore.currentCompendiumFilePath;
+    const compendiumJSON = coreStore.get("currentCompendiumIndex");
+    const projectFolder = coreStore.get("currentCompendiumFilePath");
+
+    console.log("Core CompendiumJSON is:", compendiumJSON);
+    console.log("Core ProjectFoler is:", projectFolder);
     
     // Writes the updated data to the file system, returning success or failure
     try {
         if (fs.existsSync(projectFolder)){
+            const idArray = compendiumJSON?.chapters;
+            
+            if(idArray != null) {
+                console.log("ID Array currently:", idArray);
+
+                const allChapterData = coreStore.get("currentCompendiumChapters");
+                console.log("Data Object of All Chapter Data:", allChapterData);
+                const chapterFolder = path.join(projectFolder, 'content');
+                for (let i = 0; i < idArray.length; i++) {
+                    const saveResult = saveChapter(idArray[i], chapterFolder, allChapterData[idArray[i]]);
+
+                    if (!saveResult.success){
+                        throw new Error(`Error present in saving chapters: ${saveResult.error}`);
+                    }
+                }
+            }
+
             fs.writeFileSync(
                 path.join(projectFolder, 'compendium.json'),
                 JSON.stringify(compendiumJSON, null, 2)
@@ -77,5 +99,45 @@ export function saveProject() {
     }
     catch (err) {
         return { success: false, error: err }
+    }
+}
+
+export function saveChapter(chapterID, projectFolder, chapterData) {
+    try {
+        console.log("Save Chapters Function Reached with id:", chapterID);
+        console.log("Chapter Data Set To:", chapterData);
+
+
+        if (fs.existsSync(projectFolder)) {
+            fs.writeFileSync(
+                path.join(projectFolder, `${chapterID}.html`),
+                chapterData,
+            )
+
+            return {success: true};
+        }
+        else {
+            throw new Error(`Folder '${projectFolder}' was unable to be located`);
+        }
+    }
+    catch (err) {
+        return {success: false, error: err};
+    }
+}
+
+export async function loadChapterData(filePath, chapterIDList) {
+    try {
+        const chapterData = {};
+
+        for (let i = 0; i < chapterIDList.length; ++i){
+            chapterData[chapterIDList[i]] = fs.readFileSync(path.join(filePath, `${chapterIDList[i]}.html`), 'utf-8');
+        }
+
+        coreStore.set("currentCompendiumChapters", chapterData);
+
+        return {success: true}
+    }
+    catch (err) {
+        return {success: false, error: err};
     }
 }

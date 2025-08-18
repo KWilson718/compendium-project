@@ -14,8 +14,9 @@ export default function LandingPage() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [compendiumName, setCompendiumName] = useState('');
     const navigate = useNavigate();
-    const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
-    const setCompendiumPath = frontStore((state) => state.setCompendiumPath);
+    const loadCompendiumIndex = frontStore((state) => state.loadCompendiumIndex);
+    const loadCompendiumPath = frontStore((state) => state.loadCompendiumPath);
+    const loadCompendiumChapters = frontStore((state) => state.loadCompendiumChapters);
 
     
     // Handles calling the API to create a folder, an index.json file, and then navigate to the core view
@@ -33,9 +34,10 @@ export default function LandingPage() {
             const loadResult = await window.electronAPI.loadProject(result.path);
 
             if (loadResult.success) {
-                // store data in local data stores
-                setCompendiumIndex(loadResult.compendium);
-                setCompendiumPath(result.path);
+                // Loads Data From Electron Store to Zustand
+                loadCompendiumIndex();
+                loadCompendiumChapters();
+                loadCompendiumPath();
 
                 // navigates to compendium view only after successful creation and loading of data
                 navigate("/comp-view");
@@ -56,10 +58,13 @@ export default function LandingPage() {
             // Loads project from folder
             const loadResult = await window.electronAPI.loadProject(location.folder);
 
+            console.log("Load Result Set to:", loadResult);
+
             if(loadResult.success) {
-                // Syncs up across data stores
-                setCompendiumIndex(loadResult.compendium);
-                setCompendiumPath(location.folder);
+                // Loads Data From Electron Store to Zustand
+                loadCompendiumIndex();
+                loadCompendiumChapters();
+                loadCompendiumPath();
 
                 // Only navigates upon successful load
                 navigate("/comp-view");

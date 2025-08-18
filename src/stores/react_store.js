@@ -6,7 +6,7 @@ import { create } from 'zustand';
 export const frontStore = create((set) => ({
   currentCompendiumIndex: {},
   currentCompendiumPath: '',
-  currentCompendiumChapters: [],
+  currentCompendiumChapters: {},
   
   // Sets the main index of the store
   setCompendiumIndex: (neo) => {
@@ -43,5 +43,13 @@ export const frontStore = create((set) => ({
     set({ currentCompendiumPath: neo});
 
     window.storeAPI?.set('currentCompendiumFilePath', neo);
+  },
+
+  // Gets the file path from deeper in the store levels
+  loadCompendiumPath: async (neo) => {
+    const stored = await window.storeAPI?.get('currentCompendiumFilePath');
+    if (stored) {
+      set({ currentCompendiumPath: stored });
+    }
   },
 }));
