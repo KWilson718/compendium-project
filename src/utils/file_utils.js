@@ -64,6 +64,18 @@ export function saveProject() {
     // Writes the updated data to the file system, returning success or failure
     try {
         if (fs.existsSync(projectFolder)){
+            const idArray = compendiumJSON?.chapters;
+            if (idArray != null) {
+                chapterFolder = path.join(projectFolder, 'content');
+                for (id in idArray) {
+                    const saveResult = saveChapter(id, chapterFolder);
+
+                    if (!saveResult.success){
+                        throw new Error(`Error present in saving chapters: ${saveResult.error}`);
+                    }
+                }
+            }
+
             fs.writeFileSync(
                 path.join(projectFolder, 'compendium.json'),
                 JSON.stringify(compendiumJSON, null, 2)
@@ -80,10 +92,9 @@ export function saveProject() {
     }
 }
 
-export function saveChapter(chapterID) {
+export function saveChapter(chapterID, projectFolder) {
     try {
         const chapterData = coreStore.currentCompendiumChapters[chapterID];
-        const projectFolder = path.join(coreStore.currentCompendiumFilePath, 'content');
 
 
         if (fs.existsSync(projectFolder)) {
