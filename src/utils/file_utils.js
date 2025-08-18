@@ -80,44 +80,25 @@ export function saveProject() {
     }
 }
 
-// export function createChapter(chapterName) {
-//     try {
-//         const compendiumJSON = coreStore.currentCompendiumIndex;
-//         const projectFolder = coreStore.currentCompendiumFilePath;
-//         const contentFolder = path.join(projectFolder, 'content');
-//         const scrubbedTitle = scrubSpaces(chapterName);
-//         const id = generateID();
+export function saveChapter(chapterID) {
+    try {
+        const chapterData = coreStore.currentCompendiumChapters[chapterID];
+        const projectFolder = path.join(coreStore.currentCompendiumFilePath, 'content');
 
-//         const fileName = `${id}.html`;
 
-//         const dateNow = new Date().toISOString();
+        if (fs.existsSync(projectFolder)) {
+            fs.writeFileSync(
+                path.join(projectFolder, `${chapterData.chapterID}.html`),
+                chapterData,
+            )
 
-//         // const htmlTemplate = `
-//         //     <!-- \n{\n  \"id\": \"${id}\",\n  \"title\": \"${chapterName}\",\n  \"created\": \"${now}\",\n  \"modified\": \"${now}\",\n  \"fileName\": \"${fileName}\"\n}\n-->
-//         //     <!DOCTYPE html>
-//         //     <html>
-//         //         <head>
-//         //             <title>${chapterName}</title>
-//         //         </head>
-//         //         <body>
-//         //             <h1>${chapterName}</h1>
-//         //             <p>New chapter starts here...</p>
-//         //         </body>
-//         //     </html>
-//         // `;
-
-//         // const chapterFile = {
-//         //     chapterMeta: {
-//         //         title: chapterName,
-//         //         scrubbedTitle: scrubbedTitle,
-//         //         created: new Date().toISOString(),
-//         //         lastModified: new Date().toISOString(),
-//         //         pageCount: 0,
-//         //     },
-//         //     content: {},
-//         // }
-//     }
-//     catch (err) {
-//         return { success: false, error: err };
-//     }
-// }
+            return {success: true};
+        }
+        else {
+            throw new Error(`Folder '${projectFolder}' was unable to be located`);
+        }
+    }
+    catch (err) {
+        return {success: false, error: err};
+    }
+}
