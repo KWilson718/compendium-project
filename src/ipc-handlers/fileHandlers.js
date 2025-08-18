@@ -71,7 +71,9 @@ export default function registerFileHandlers() {
     // Handles call to save project, returning result based on boolean success
     ipcMain.handle('electron-file-save', async (event) => {
         try {
+            console.log("Saving Project");
             const result = await saveProject();
+            console.log("Result from Saving Project", result);
 
             if (result) {
                 return { success: true }
@@ -113,14 +115,12 @@ export default function registerFileHandlers() {
             // Takes the Core Store's currentCompendiumChapters object, and assigns 'id: startingHTML' to it
             currentChapters[id] = startingHTML;
             coreStore.set('currentCompendiumChapters', currentChapters);
-            console.log("Current Chapters set to: ", currentChapters);
 
             // Takes the Core Store's currentCompendiumIndex and pushes the id into the chapters: [] array
             if (!currentIndex.chapters) currentIndex.chapters = [];
             currentIndex.chapters.push(id);
             currentIndex.projectMeta.lastModified = now;
             coreStore.set('currentCompendiumIndex', currentIndex);
-            console.log("Current Compendium Index set to: ", currentIndex);
 
             return { success: true, id: id, title: chapterName };
         }
