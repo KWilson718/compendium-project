@@ -44,4 +44,12 @@ export const frontStore = create((set) => ({
 
     window.storeAPI?.set('currentCompendiumFilePath', neo);
   },
+
+  // Gets the file path from deeper in the store levels
+  loadCompendiumPath: async (neo) => {
+    const stored = await window.storeAPI?.get('currentCompendiumFilePath');
+    if (stored) {
+      set({ currentCompendiumPath: stored });
+    }
+  },
 }));

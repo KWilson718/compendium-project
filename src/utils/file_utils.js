@@ -124,3 +124,20 @@ export function saveChapter(chapterID, projectFolder, chapterData) {
         return {success: false, error: err};
     }
 }
+
+export async function loadChapterData(filePath, chapterIDList) {
+    try {
+        const chapterData = {};
+
+        for (let i = 0; i < chapterIDList.length; ++i){
+            chapterData[chapterIDList[i]] = fs.readFileSync(path.join(filePath, `${chapterIDList[i]}.html`), 'utf-8');
+        }
+
+        coreStore.set("currentCompendiumChapters", chapterData);
+
+        return {success: true}
+    }
+    catch (err) {
+        return {success: false, error: err};
+    }
+}

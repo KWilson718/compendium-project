@@ -15,9 +15,9 @@ export default function CompendiumView () {
 
     const compendiumObj = frontStore((state) => state.currentCompendiumIndex);
     const compendiumChapters = frontStore((state) => state.currentCompendiumChapters);
-    const setCompendiumIndex = frontStore((state) => state.setCompendiumIndex);
     const loadCompendiumIndex = frontStore((state) => state.loadCompendiumIndex);
     const loadCompendiumChapters = frontStore((state) => state.loadCompendiumChapters);
+    const loadCompendiumPath = frontStore((state) => state.loadCompendiumPath);
 
     const navigate = useNavigate();
 
@@ -58,8 +58,7 @@ export default function CompendiumView () {
         if (result.success) {
             loadCompendiumIndex();
             loadCompendiumChapters();
-
-            console.log("Current Compendium Chapters: ", compendiumChapters);
+            loadCompendiumPath();
         }
         
         setShowModal(false);

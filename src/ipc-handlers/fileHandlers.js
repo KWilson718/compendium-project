@@ -1,7 +1,7 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
-import { promptForBaseFolder, createNewProject, saveProject } from '../utils/file_utils.js';
+import { promptForBaseFolder, createNewProject, saveProject, loadChapterData } from '../utils/file_utils.js';
 import coreStore from '../stores/electron_store.js';
 import { generateID } from '../utils/utility_functions.js';
 
@@ -48,20 +48,37 @@ export default function registerFileHandlers() {
     });
 
     // Loads data from folder in file system
-    ipcMain.handle('electron-file-load', async (event, projectPath, sectionId) => {
+    ipcMain.handle('electron-file-load', async (event, projectPath) => {
         try {
-            const compendiumPath = path.join(projectPath, 'compendium.json');
-            const compendium = JSON.parse(fs.readFileSync(compendiumPath, 'utf-8'));
+            const compendiumIndexPath = path.join(projectPath, 'compendium.json');
+            const compendiumIndex = JSON.parse(fs.readFileSync(compendiumIndexPath, 'utf-8'));
 
-            if (!sectionId){
-                return { success: true, compendium, chapters: {} };
+            coreStore.set("currentCompendiumIndex", compendiumIndex);
+            coreStore.set("currentCompendiumFilePath", projectPath);
+            coreStore.set("currentCompendiumChapters", {});
+
+            if (compendiumIndex?.chapters){
+                if (compendiumIndex.chapters.length > 0){
+                    const chapterIDList = compendiumIndex.chapters;
+                    // coreStore.set("currentCompendiumChapters", await );
+                    const result = await loadChapterData(path.join(projectPath, 'content'), chapterIDList);
+
+
+                    console.log("Result Set To", result);
+
+                    if (!result.success) {
+                        throw new Error('Chapter Load Failed', result.error);
+                    }
+
+                    return { success: true }
+                }
+                else {
+                    return { success: true };
+                }
             }
-
-            // Starting logic to load in specific project section if one is present
-            const sectionPath = path.join(projectPath, 'content', `${sectionId}.html`);
-            const sectionContent = fs.readFileSync(sectionPath, 'utf-8');
-
-            return { success: true, compendium, sectionContent };
+            else {
+                return { success: true };
+            }
         }
         catch (err) {
             return { success: false, error: err.message };
