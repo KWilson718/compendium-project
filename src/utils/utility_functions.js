@@ -10,3 +10,19 @@ export function generateID() {
 export function scrubSpaces(string){
     return string.replaceAll(' ', '_');
 }
+
+// Extracts the metadata JSON object from the top of a chapter's HTML file
+export function extractMetaData(html) {
+    // extract JSON in comment
+    const metaMatch = html.match(/<!--([\s\S]*?)-->/);
+    let meta = null;
+
+    if (metaMatch) {
+    try {
+        meta = JSON.parse(metaMatch[1]);
+        console.log("Parsed metadata:", meta); // { id, title, created, modified }
+    } catch (e) {
+        console.error("Error parsing metadata:", e);
+    }
+    }
+}
