@@ -93,7 +93,7 @@ export default function CompendiumView () {
 
                 {(compendiumObj?.chapters.length > 0) && (
                     <DataElementRow dataObject={compendiumChapters} dataIndexArray={compendiumObj?.chapters} />
-                )};
+                )}
 
                 <StandardButton1 onClick={() => setShowModal(true)} >Add Chapter</StandardButton1>
 

@@ -19,7 +19,7 @@ import CompendiumView from './pages/CompendiumView.jsx';
 // Basic React Create Root Function
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <div className="h-screen w-screen flex flex-col bg-black text-white m-0 p-0">
+        <div className="min-h-screen w-screen flex flex-col bg-black text-white m-0 p-0">
             {/* Core React Router Component Structure */}
             <Router>
                 <Routes>
